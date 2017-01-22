@@ -19,6 +19,13 @@ public:
 
     bool getHello() const;
     void setHello(bool value);
+    //zz{
+    bool getpHello() const;
+    void setpHello(bool value);
+    void requestRegister();
+    void setRegister(bool value);
+    bool getRegister() const;
+    //zz}
 
     ClientID getId() const;
     void setId(const ClientID &value);
@@ -31,6 +38,10 @@ private:
     QHostAddress ip;
     HostPort port;
     bool hello;
+    //zz{
+    bool phello; //for saving 2 last hello
+    bool isRegister;
+    //zz}
     ClientID id;
 };
 

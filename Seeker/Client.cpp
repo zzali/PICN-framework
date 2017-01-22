@@ -1,7 +1,9 @@
 #include "Client.h"
+#include <QUdpSocket>
 
 Client::Client()
-    :hello(true)
+    //zz:hello(true)
+    :hello(true),phello(true),isRegister(false)
 {
 
 }
@@ -49,5 +51,35 @@ void Client::setIp(const QHostAddress &value)
 {
     ip = value;
 }
+
+//zz{
+bool Client::getpHello() const
+{
+    return phello;
+}
+
+void Client::setpHello(bool value)
+{
+    phello = value;
+}
+
+bool Client::getRegister() const
+{
+    return isRegister;
+}
+
+void Client::setRegister(bool value)
+{
+    isRegister = value;
+}
+
+void Client::requestRegister(){
+    QUdpSocket socket;
+    socket.writeDatagram(QByteArray("Request Register"),
+                         ip, Definitions::globalInstance()->clientRegPort);
+    socket.close();
+}
+
+//zz}
 
 

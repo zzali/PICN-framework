@@ -4,6 +4,7 @@
 #include "ActiveClients.h"
 #include <QUdpSocket>
 #include <iostream>
+#include <QTime>
 
 SeekRequest::SeekRequest()
 {
@@ -21,7 +22,7 @@ bool SeekRequest::processRequest(ActiveClients *clients)
         return false;
     ContentKey contentKey = payload.mid(0, 8);
     //zz{
-    //qDebug()<<"Seek request recieved for content \n";//<<contentKey<<"\n";
+    //qDebug()<<"Seek request recieved for "<<contentKey<<"\n";
     //zz}
     bool ok;
     ClientID clientID = PublisherFinder::getInstance()->seekContent(clients,contentKey, ok);
@@ -29,20 +30,14 @@ bool SeekRequest::processRequest(ActiveClients *clients)
     QUdpSocket socket;
     if(ok == false) {
         socket.writeDatagram(QByteArray("NOT FOUND"),client.getIp(), client.getPort());
-            //qDebug()<<"Seeker error in sending <NOT FOUND>\n";
-        //zz{
-        qDebug()<<"Seeker Not found content "<<contentKey<<"\n";
-        //zz}
+        qDebug()<<"Not Found for content: "<<contentKey<<", time: "<<QTime::currentTime().msecsSinceStartOfDay()<<"\n";
         return false;
     }
 
     Client responderClient = clients->getClient(clientID);
-    //zz{
-    qDebug()<<"Seeker find a publisher clinet for "<<contentKey<<"\n";
-    //zz}
     socket.writeDatagram(QByteArray::number(clientID, 16).rightJustified(8, '0')
                          + responderClient.getIp().toString().toLatin1(),
                          client.getIp(), client.getPort());
-        //qDebug()<<"Seeker error in sending seek reply \n";
+    qDebug()<<"Seeker Found for content: "<<contentKey<<", time: "<<QTime::currentTime().msecsSinceStartOfDay()<<"\n";
     return true;
 }

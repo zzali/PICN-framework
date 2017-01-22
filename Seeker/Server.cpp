@@ -1,5 +1,7 @@
 #include "Server.h"
+#include "ProcessDatagramThread.h"
 
+int readCount = 0;
 Server::Server(QObject *parent)
     :QObject(parent)
 {
@@ -17,47 +19,24 @@ void Server::initSocket()
     udpSocket->bind(QHostAddress(Definitions::globalInstance()->seekerIP), Definitions::globalInstance()->serverUdpPort);
 //    udpSocket->bind(QHostAddress("127.0.0.1"), 7070);
 
-    connect(udpSocket, SIGNAL(readyRead()),
-            this, SLOT(readPendingDatagrams()));
-}
+    readCount = 0;
 
-void Server::readPendingDatagrams()
-{
-    while (udpSocket->hasPendingDatagrams()) {
-        QByteArray datagram;
-        datagram.resize(udpSocket->pendingDatagramSize());
-        QHostAddress sender;
-        quint16 senderPort;
+    while (udpSocket->waitForReadyRead(-1)) {
+        while(udpSocket->hasPendingDatagrams()) {
+                //qDebug()<<"Begin readPendingDatagrams #"<<readCount<<", time: "<<QTime::currentTime().second()<<"."<<QTime::currentTime().msec()<<"\n";
+                QByteArray datagram;
+                datagram.resize(udpSocket->pendingDatagramSize());
+                QHostAddress sender;
+                quint16 senderPort;
 
-        udpSocket->readDatagram(datagram.data(), datagram.size(),
-                                &sender, &senderPort);
-
-        processTheDatagram(datagram, sender, senderPort);
+                udpSocket->readDatagram(datagram.data(), datagram.size(),
+                                        &sender, &senderPort);
+                ProcessDatagramThread *pd_thread = new ProcessDatagramThread();
+                pd_thread->init(datagram, sender, senderPort);
+                pd_thread->start();
+            }
     }
-}
 
-void Server::processTheDatagram(QByteArray datagram,  QHostAddress senderAddress, HostPort senderPort)
-{
-    QByteArray typeField( datagram.left(8) );
-    Request *request;
-    ActiveClients *clients = new ActiveClients();
-    //ActiveClients::startCheckHello();
-    if( typeField == QByteArray("REGISTER") ){
-        //qDebug()<<"Register recived\n";
-        request = new RegisterRequest();
-    }
-    else if( typeField == QByteArray("HELLO---") ) {
-        request = new HelloRequest();
-    }
-    else if( typeField == QByteArray("SEEK----") ) {
-        request = new SeekRequest();
-    }
-    else
-        return;
-
-    if( !request->setData(datagram, senderAddress, senderPort) )
-        return;
-    request->processRequest(clients);
 }
 
 

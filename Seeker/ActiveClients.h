@@ -13,14 +13,18 @@ class ActiveClients : public QObject
 
 private:
     static QHash<ClientID, Client> clients;
-    QTimer *timer;
+    //QTimer *timer;
     //ActiveClients* instance;
+    static int n;
 
 public:
     explicit ActiveClients(QObject *parent = 0);
     //ActiveClients();
     ~ActiveClients();
     bool isActive(ClientID clientID);
+    //zz{
+    bool contained(ClientID clientID);
+    //zz}
     bool saidHello(ClientID clientID);
     Client getClient(ClientID clientID);
     void registerClient(Client client);

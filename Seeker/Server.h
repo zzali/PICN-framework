@@ -5,9 +5,7 @@
 #include <QUdpSocket>
 #include "Definitions.h"
 
-#include "HelloRequest.h"
-#include "RegisterRequest.h"
-#include "SeekRequest.h"
+
 
 class Server : public QObject
 {
@@ -18,11 +16,11 @@ public:
     void initSocket();
 
 private:
-    void processTheDatagram(QByteArray datagram, QHostAddress senderAddress, HostPort senderPort);
+    //void processTheDatagram(QByteArray datagram, QHostAddress senderAddress, HostPort senderPort);
     QUdpSocket *udpSocket;
 
 private slots:
-    void readPendingDatagrams();
+    //void readPendingDatagrams();
 };
 
 #endif // SERVER_H

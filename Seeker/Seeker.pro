@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     RequestHandler.cpp \
     Server.cpp \
     Definitions.cpp \
-    LogThread.cpp
+    LogThread.cpp \
+    ProcessDatagramThread.cpp
 
 HEADERS += \
     PublisherFinder.h \
@@ -38,4 +39,5 @@ HEADERS += \
     RequestHandler.h \
     Server.h \
     Definitions.h \
-    LogThread.h
+    LogThread.h \
+    ProcessDatagramThread.h

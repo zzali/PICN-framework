@@ -1,40 +1,52 @@
 #include "ActiveClients.h"
 #include <iostream>
 
-//ActiveClients* ActiveClients::instance = new ActiveClients;
+//zz ActiveClients* ActiveClients::instance = new ActiveClients ;
 QHash<ClientID, Client> ActiveClients::clients;
+int ActiveClients::n = 0;
 void ActiveClients::checkHelloTimeout()
 {
+   //zz{
+    n++;
     try {
-        for(QHash<ClientID, Client>::Iterator it = clients.begin(); it != clients.end(); ) {
+        int i = 0;
+        //qDebug() <<"check hello timeout function "<<n<<"\n";
+        for(QHash<ClientID, Client>::Iterator it = clients.begin(); it != clients.end();i++ ) {
             if( (*it).getHello() == false ){
-                clients.remove((*it).getId());
-                //zz{
-                //qDebug()<<"checkHelloTimeout: clinet failed\n";
-                //zz}
+                if((*it).getpHello() == false){
+                    //zz clients.remove((*it).getId());
+                    it = clients.erase(it);
+                    //qDebug()<<"checkHelloTimeout: clinet failed "<<i<<"\n";
+                }
+                else{
+                    (*it).setpHello(false);
+                    it++;
+                }
             }
             else{
                 //zz{
+                /*if ((*it).getRegister()==false)
+                    (*it).requestRegister();*/
                 (*it).setHello(false);
-                //qDebug()<<"checkHelloTimeout: clinet ok\n";
                 it++;
-                //zz}
-           }
+                //qDebug()<<"checkHelloTimeout: clinet ok " <<i<<"\n";
+            }
         }
     }
     catch(...) {
 
     }
-    //QThread::msleep(6000);
+    QThread::msleep(6000);
+     //zz}
 }
 
 
 ActiveClients::ActiveClients(QObject *parent) : QObject(parent)
 //ActiveClients::ActiveClients()
 {
-     timer = new QTimer(this);
-    timer->moveToThread(this->thread());
-    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(checkHelloTimeout()));
+    QTimer *timer = new QTimer(this);
+    //timer->moveToThread(this->thread());
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkHelloTimeout()));
     timer->start(6000);
 }
 
@@ -52,16 +64,25 @@ ActiveClients::~ActiveClients()
 
  bool ActiveClients::isActive(ClientID clientID)
 {
-    if(clients.contains(clientID))
+    //zz if(clients.contains(clientID) )
+    if(clients.contains(clientID) && clients[clientID].getpHello()==true)
         return true;
     else
         return false;
 }
+ bool ActiveClients::contained(ClientID clientID)
+ {
+     if(clients.contains(clientID))
+         return true;
+     else
+         return false;
+ }
 
 bool ActiveClients::saidHello(ClientID clientID)
 {
     if( clients.contains(clientID) ) {
         clients[clientID].setHello(true);
+        clients[clientID].setpHello(true);
         return true;
     }
     else {
@@ -80,6 +101,9 @@ bool ActiveClients::saidHello(ClientID clientID)
 
  void ActiveClients::registerClient(Client client)
 {
+     //zz{
+     client.setRegister(false);
+     //zz}
     clients.insert(client.getId(), client);
 }
 

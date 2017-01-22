@@ -9,6 +9,7 @@ class HelloRequest: public Request
 public:
     HelloRequest();
     ~HelloRequest();
+    static int i;
 
     bool processRequest(ActiveClients *clients);
 };

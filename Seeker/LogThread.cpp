@@ -20,7 +20,6 @@ LogThread::~LogThread()
 void LogThread::run()
 {
     while(true){
-        this->sleep(10);
         outFile->open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream ts(outFile);
         int len = qlog->size();
@@ -29,6 +28,7 @@ void LogThread::run()
         }
         ts.flush();
         outFile->close();
+        this->sleep(10);
     }
 
 }

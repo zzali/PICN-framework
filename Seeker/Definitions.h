@@ -11,10 +11,11 @@ class Definitions {
 
 public:
     int serverUdpPort = 7070;
-    QString seekerIP = "172.17.26.163";
+    QString seekerIP = "192.168.2.150";
     static Definitions* globalInstance();
     //zz{
     QString logDir = "./Log/";
+    int clientRegPort = 8080;
     //zz}
 };
 

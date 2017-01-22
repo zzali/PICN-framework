@@ -21,9 +21,11 @@ bool RegisterRequest::processRequest(ActiveClients *clients)
         ContentKey contentKey( payload.mid(i*8, 8) );
         PublisherFinder::getInstance()->registerContent(contentKey, client.getId());
         //zz{
-        qDebug()<<"Register content "<<contentKey<<"\n";
+        //qDebug()<<"Register content "<<contentKey<<"\n";
         //zz}
     }
-
+    //zz{
+    client.setRegister(true);
+    //zz}
     return true;
 }
