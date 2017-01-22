@@ -62,5 +62,4 @@ HEADERS += \
 FORMS += \
     MainWidget.ui
 
-RESOURCES += \
-    Resources.qrc
+
