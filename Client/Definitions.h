@@ -19,11 +19,12 @@ public:
     QString configDir = "./Data/Config/";
     //zz{
     QString logDir = "./Data/Log/";
+    int clientRegPort = 8080;
     //zz}
     int publisherPort = 9090;
     int proxyPort = 6060;
 
-    QString seekerIP = "172.17.25.247";
+    QString seekerIP = "192.168.2.71";
     int seekerPort = 7070;
 
     RecorderState recorderState = DISABLE;
@@ -40,6 +41,9 @@ public:
 
     static Definitions* getInstance() {
         return instance;
+    }
+    static void setSeekerIP(QString ip){
+        instance->seekerIP = ip;
     }
 
 private:

@@ -14,11 +14,15 @@ HTTPProvider::~HTTPProvider()
 }
 
 
-void HTTPProvider::startConnection(Request& request)
+void HTTPProvider::startConnection(Request *request)
 {
     firstReply = true;
-    this->request = &request;
-    reply = accessManager->get(request);
+    this->request = request;
+    //zz{
+    this->request->size = 0;
+
+    //zz}
+    reply = accessManager->get(*request);
 
     connect(reply, SIGNAL(readyRead()),
             this, SLOT(readyRead()));
@@ -32,10 +36,10 @@ void HTTPProvider::startConnection(Request& request)
     timer->start(2000);
     timeout = false;
 
-    if(request.isCacheable()) {
-//        qDebug() << request.url << endl;
-        ClientCore::getInstance()->registerInRepository(request.hash);
-        file = new QFile(Definitions::getInstance()->tempDir + request.hash + ".tmp.part");
+    if(request->isCacheable()) {
+//        qDebug() << request->url << endl;
+        ClientCore::getInstance()->registerInRepository(request->hash);
+        file = new QFile(Definitions::getInstance()->tempDir + request->hash + ".tmp.part");
         if(!file->open(QIODevice::WriteOnly)) {
             delete file;
             file = NULL;
@@ -70,18 +74,20 @@ bool HTTPProvider::readyRead()
     }
 
 
-    QByteArray data = reply->readAll();
     //zz{
-    request->size = data.size();
+    request->size += reply->bytesAvailable();
+    //qDebug() <<"request->size is "<<request->size<<"\n";
     //zz}
+    QByteArray data = reply->readAll();
 
-    if(file != NULL && file->isOpen()) {
+    /*zzif(file != NULL && file->isOpen()) {
         file->write(data);
         file->flush();
     }
 
     clientSocket->write(data);
-    clientSocket->flush();
+    clientSocket->flush();*/
+    request->dataReply.append(data);
     //zz{
 
     //qDebug()<<"HTTPProvider::readyRead:end of method after clientSocket.flush\n";
@@ -96,6 +102,17 @@ void HTTPProvider::errorOccured(QNetworkReply::NetworkError err)
         firstReply = false;
         writeReplyHeader();
     }
+    //zz{
+    if (!request->dataReply.isEmpty()){
+        if(file != NULL && file->isOpen()) {
+            file->write(request->dataReply);
+            file->flush();
+        }
+
+        clientSocket->write(request->dataReply);
+        clientSocket->flush();
+     }
+    //zz}
     if(file != NULL) {
         file->remove();
         delete file;
@@ -111,6 +128,15 @@ void HTTPProvider::transferFinished()
         firstReply = false;
         writeReplyHeader();
     }
+    if (!request->dataReply.isEmpty()){
+        if(file != NULL && file->isOpen()) {
+            file->write(request->dataReply);
+            file->flush();
+        }
+
+        clientSocket->write(request->dataReply);
+        clientSocket->flush();
+     }
 
 //    QByteArray data;
 //    data.append(reply->readAll());
@@ -134,9 +160,8 @@ void HTTPProvider::transferFinished()
     }
     //zz{
 
-    if (request->isSupported())
-        qDebug() << "Http RT time for " << request->contentKey <<": "<<request->requestTime.msecsTo(QTime::currentTime())
-                    <<", size: "<< request->size/1000<<"\n";
+    qDebug().noquote().nospace()<< qSetFieldWidth(10) << left << "HTTP"<< request->contentType<<request->contentKey <<request->size
+                      <<request->requestTime.msecsTo(QTime::currentTime())<<qSetFieldWidth(0)<<"\n";
     //zz}
     endOfThread();
 }
@@ -162,7 +187,7 @@ void HTTPProvider::disconnectFromBrowser()
     }
 }
 
-void HTTPProvider::writeReplyHeader()
+void HTTPProvider:: writeReplyHeader()
 {
     QList<QNetworkReply::RawHeaderPair> header = reply->rawHeaderPairs();
     QByteArray data;
@@ -189,6 +214,7 @@ void HTTPProvider::writeReplyHeader()
     }
 
     clientSocket->write(data);
+    request->size += data.size();
     clientSocket->flush();
     //zz{
     //qDebug()<<"HTTPProvider::writeReplyHeader end of  writeReplyHeader()\n";

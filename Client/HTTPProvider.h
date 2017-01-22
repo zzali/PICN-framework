@@ -18,7 +18,8 @@ class HTTPProvider : public QObject
 public:
     explicit HTTPProvider(QObject *parent = 0);
     ~HTTPProvider();
-    void startConnection(Request &request);
+    //zz void startConnection(Request &request);
+    void startConnection(Request *request);
     void setReceiverSocket(QTcpSocket *clientSocket,
                            QNetworkAccessManager *accessManager);
     QTcpSocket *clientSocket;

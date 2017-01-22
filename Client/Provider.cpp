@@ -28,7 +28,7 @@ bool Provider::failed()
     return false;
 }
 
-bool Provider::deliver(Request request, QTcpSocket *clientSocket)
+bool Provider::deliver(Request *request, QTcpSocket *clientSocket)
 {
     //zz{
     //qDebug() <<"provider: start delivering from publisher\n";
@@ -37,14 +37,14 @@ bool Provider::deliver(Request request, QTcpSocket *clientSocket)
     peerSocket->connectToHost(QHostAddress(peerAddress), peerPort);
 
 
-    f = new QFile(Definitions::getInstance()->tempDir + request.hash + ".tmp.part");
+    f = new QFile(Definitions::getInstance()->tempDir + request->hash + ".tmp.part");
     f->open(QIODevice::WriteOnly);
 
     if(!peerSocket->waitForConnected(1000)) {
         return false;
     }
 
-    peerSocket->write("GIVE " + request.hash.toUtf8() + "\r\n");
+    peerSocket->write("GIVE " + request->hash.toUtf8() + "\r\n");
     peerSocket->flush();
 
     int payloadLength = -1, payloadCount = 0;
@@ -95,10 +95,11 @@ bool Provider::deliver(Request request, QTcpSocket *clientSocket)
     peerSocket->close();
     peerSocket->disconnectFromHost();
     //zz{
-    request.size = payloadLength;
+    request->size = payloadLength;
+    //qDebug() << "Provider payload size for request: "<<request->size<<"\n";
     //zz}
     f->close();
-    f->rename(Definitions::getInstance()->tempDir + request.hash + ".tmp");
+    f->rename(Definitions::getInstance()->tempDir + request->hash + ".tmp");
 
     return true;
 }

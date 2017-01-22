@@ -36,23 +36,25 @@ bool Publisher::deliver(PeerRequest &request)
     peerSocket->write("TAKE " + QByteArray::number(payloadLength) + " \r\n");
 //    qDebug() << "here 16";
     while(!headerFile->atEnd()) {
-        this->waitForBandwidthLimit();
-        QByteArray data = headerFile->read(1000);
+       // this->waitForBandwidthLimit();
+        QByteArray data = headerFile->read(50000);
         peerSocket->write(data);
         data_size += data.size();
-        peerSocket->waitForBytesWritten(1000);
-//        if(!peerSocket->waitForBytesWritten(5000))
-//            return false;
+        //peerSocket->waitForBytesWritten(1000);
+        if(!peerSocket->waitForBytesWritten(5000))
+            return closeConnection(false);
+            //zz return false;
     }
 //    qDebug() << "header sent!";
     while(!contentFile->atEnd()) {
-        this->waitForBandwidthLimit();
-        QByteArray data = contentFile->read(1000);
+       // this->waitForBandwidthLimit();
+        QByteArray data = contentFile->read(50000);
         peerSocket->write(data);
         data_size += data.size();
-        peerSocket->waitForBytesWritten(1000);
-//        if(!peerSocket->waitForBytesWritten(5000))
-//            return false;
+        //peerSocket->waitForBytesWritten(1000);
+        if(!peerSocket->waitForBytesWritten(5000))
+            return closeConnection(false);
+            //zzreturn false;
     }
     return closeConnection(true);
 }
@@ -60,13 +62,13 @@ bool Publisher::deliver(PeerRequest &request)
 bool Publisher::closeConnection(bool ok)
 {
     if(!ok) {
-        peerSocket->write("NOT FOUND");
-        peerSocket->flush();
-        peerSocket->disconnectFromHost();
+        //zz peerSocket->write("NOT FOUND");
+        //zz peerSocket->flush();
+        //zz peerSocket->disconnectFromHost();
         return false;
     }
     else {
-        peerSocket->waitForReadyRead();
+        //zzpeerSocket->waitForReadyRead();
         peerSocket->disconnectFromHost();
         return true;
     }

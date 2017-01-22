@@ -50,10 +50,8 @@ void RequestHandlerThread::run()
         //qDebug()<<"Start fetching from sProvider\n";
         //zz}
         sProvider->setReceiverSocket(socket);
-        if(sProvider->deliver(*request)) {
+        if(sProvider->deliver(request)) {
             //zz{
-            qDebug() << "PICN RT time for " << request->contentKey <<": "<<request->requestTime.msecsTo(QTime::currentTime())
-                     <<", size: "<< request->size/1000<<"\n";
             //qDebug()<<"sProvider->deliver is Ok for content "<<request->contentKey<<"\n";
             //zz}
             sProvider->disconnectFromBrowser();
@@ -67,8 +65,9 @@ void RequestHandlerThread::run()
     }
     //qDebug()<<"begin pureHttp\n";
     //zz}
+
     hProvider->setReceiverSocket(socket, accessManager);
-    hProvider->startConnection(*request);
+    hProvider->startConnection(request);
 
     this->exec();
 }

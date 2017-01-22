@@ -10,6 +10,27 @@ PublisherServer::PublisherServer(QObject *parent) :
     connect(server, SIGNAL(newConnection()), this, SLOT(newConnectionArrived()));
 }
 
+//zz{
+PublisherServer::~PublisherServer(){
+    //delete h;
+    if (h!=NULL){
+        h->quit();
+        if(!h->wait(1000)) //Wait until it actually has terminated (max. 3 sec)
+        {
+            h->terminate(); //Thread didn't exit in time, probably deadlocked, terminate it!
+            qDebug()<<"before wait in ~publisherServer()\n";
+            h->wait(); //We have to wait again here!
+            qDebug()<<"after wait in ~publisherServer()\n";
+        }
+    }
+    /*if (h!=NULL){
+        h->wait(5000);
+        delete h;
+    }*/
+}
+
+//zz}
+
 void PublisherServer::newConnectionArrived()
 {
     socket = server->nextPendingConnection();
@@ -24,7 +45,18 @@ void PublisherServer::newConnectionArrived()
 void PublisherServer::freeMemory()
 {
     responseCount --;
-    delete h;
+    //zz delete h;
+    if (h!=NULL){
+        h->quit();
+        if(!h->wait(3000)) //Wait until it actually has terminated (max. 3 sec)
+        {
+            h->terminate(); //Thread didn't exit in time, probably deadlocked, terminate it!
+            qDebug()<<"Before wait in freeMemory()\n";
+            h->wait(); //We have to wait again here!
+            qDebug()<<"After wait in freeMemory()\n";
+        }
+    }
+
 //    PublisherThread *sndr = (PublisherThread*)sender();
 //    socket->waitForDisconnected();
 //    this->thread()->msleep(100);

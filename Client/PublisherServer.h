@@ -11,6 +11,9 @@ class PublisherServer : public QObject
     Q_OBJECT
 public:
     explicit PublisherServer(QObject *parent = 0);
+    //zz{
+    ~PublisherServer();
+    //zz}
     QTcpServer *server;
     QTcpSocket *socket;
     int MAX_RESPONSE, responseCount;

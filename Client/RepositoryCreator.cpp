@@ -44,7 +44,7 @@ void RepositoryCreator::processTmpFile(QFileInfo& fileInfo)
 
     bool first = true;
     while( !f_tmp->atEnd() ) {
-        QByteArray data = f_tmp->read(10000);
+        QByteArray data = f_tmp->read(50000);
         if(first) {
             first = false;
             int ind = data.indexOf("\r\n\r\n");

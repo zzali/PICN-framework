@@ -12,6 +12,10 @@ class Request : public QNetworkRequest
 {
 public:
     enum RequestType{GET, POST};
+    //zz{
+    QByteArray contentType;
+    QByteArray dataReply;
+    //zz}
     Request(QObject *parent = 0);
     bool parseRequest(QByteArray request);
     bool isCacheable();
@@ -30,6 +34,8 @@ public:
     //zz{
     QTime requestTime;
     quint64 size;
+
+
     //zz}
 };
 

@@ -12,12 +12,12 @@ SendHelloThread::SendHelloThread(QObject *parent) :
 void SendHelloThread::run()
 {
     while(1) {
-        this->msleep(6000);
         QUdpSocket udpSocket;
         udpSocket.writeDatagram(QByteArray("HELLO---")
                                 + Definitions::getInstance()->clientID
                                 , QHostAddress(Definitions::getInstance()->seekerIP)
                                 , Definitions::getInstance()->seekerPort);
+        this->msleep(6000);
         //zz{
         //qDebug()<<"Hello is sent\n";
         //zz}

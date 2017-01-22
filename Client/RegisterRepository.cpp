@@ -14,10 +14,23 @@ RegisterRepository::RegisterRepository()
 
 void RegisterRepository::sendUnRegistered(){
     QSet<QString> set;
+    //check if sekker request all registered content
+    QUdpSocket socket;
+    bool TotalReg = false;
+    socket.bind(Definitions::getInstance()->clientRegPort);
 
+    if(socket.waitForReadyRead(100)){
+        QByteArray msg = socket.readAll();
+        if (msg==QByteArray("Request Register")){
+            TotalReg = true;
+            qDebug()<<"after read request register \n";
+        }
+    }
+    socket.close();
+    //
     for(QMap<QString, QVector<bool> >::Iterator it = ClientCore::getInstance()->repositoryTable.begin();
         it != ClientCore::getInstance()->repositoryTable.end(); it++) {
-        if (it.value()[0] == true){
+        if (TotalReg || it.value()[0] == true){
             if(it.value()[1] == false) {
                 set.insert(it.key());
                 it.value()[1] = true;

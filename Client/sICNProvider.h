@@ -19,8 +19,10 @@ public:
     ~sICNProvider();
     void disconnectFromBrowser();
     void setReceiverSocket(QTcpSocket *clientSocket);
-    bool deliver(Request request);
-    bool deliverFromLocalRepository(Request request);
+    //zz bool deliver(Request request);
+    bool deliver(Request *request);
+    //zz bool deliverFromLocalRepository(Request request);
+    bool deliverFromLocalRepository(Request *request);
 
     QTcpSocket *clientSocket;
     QFile *headerFile, *contentFile;

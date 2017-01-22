@@ -42,9 +42,16 @@ int main(int argc, char *argv[])
 //            MainWidget *w = new MainWidget();
 //            w->show();
             //zz{
+            //get seeker IP
+            qDebug() <<"Please Enter the seeker IP (Ex. 192.168.2.150):";
+            QTextStream qin(stdin);
+            Definitions::setSeekerIP(qin.readLine());
+
             debugThread = new LogThread();
             debugThread->start();
             qInstallMessageHandler(customMessageHandler);
+
+
             //zz}
             t = new RepositoryCreatorThread();
             t->start();

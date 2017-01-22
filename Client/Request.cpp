@@ -10,6 +10,9 @@ Request::Request(QObject *parent)
 bool Request::parseRequest(QByteArray request)
 {
     this->requestText = request;
+    //zz{
+    requestTime = QTime::currentTime();
+    //zz}
     int ind = request.indexOf("\r\n\r\n");
     QByteArray header = request.left(ind);
     QByteArray data;
@@ -44,9 +47,7 @@ bool Request::parseRequest(QByteArray request)
         //qDebug()<<"*****Content Key: "<<contentKey.toStdString()<<"\n";
         hash = QString(tmp.toHex());
     }
-    //zz{
-    requestTime = QTime::currentTime();
-    //zz}
+
     return true;
 }
 
@@ -84,22 +85,27 @@ bool Request::isSupported()
 void Request::setSupported()
 {
     QByteArrayList supportedList;
+
     supportedList.append(".jpg");
     supportedList.append(".jpeg");
-//    supportedList.append(".png");
+    supportedList.append(".png");
     supportedList.append(".gif");
 //    supportedList.append(".css");
     supportedList.append(".mp3");
     supportedList.append(".mp4");
+    supportedList.append(".flv");
 //    supportedList.append(".js");
     supportedList.append(".swf");
 //    supportedList.append(".exe");
 //    supportedList.append(".pdf");
+    supportedList.append(".non");
 
-    for(int i = 0; i < supportedList.size(); i++)
-        if(url.contains(supportedList[i])) {
+    for(int i=0;i<supportedList.size()-1;i++)
+        if(url.contains(supportedList.at(i))) {
             supported = true;
+            contentType = supportedList.at(i);
             return;
         }
+    contentType = supportedList.at(supportedList.size()-1);
     supported = false;
 }

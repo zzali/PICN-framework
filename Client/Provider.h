@@ -17,7 +17,7 @@ public:
     QString peerAddress;
     int peerPort;
     //zz bool deliver(Request request);
-    bool deliver(Request request, QTcpSocket *clientSocket);
+    bool deliver(Request *request, QTcpSocket *clientSocket);
     QTcpSocket *peerSocket;
     QFile *f;
 signals:

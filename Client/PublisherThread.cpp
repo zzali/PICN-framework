@@ -33,7 +33,7 @@ void PublisherThread::run()
 //    qDebug() << QString(request.hash);
 
     bool success = false; //for nothing
-    if(request.isFetchable() && ClientCore::getInstance()->isValidInRepository(request.hash)
+    if(request.isFetchable() /*zz && ClientCore::getInstance()->isValidInRepository(request.hash)*/
                 && responsePriority == 1) {
         publisher->setReceiverSocket(socket);
         if(publisher->deliver(request))
@@ -42,7 +42,7 @@ void PublisherThread::run()
     else {
         socket->write("NOT FOUND");
         socket->flush();
-        socket->waitForReadyRead(500);
+        //zz socket->waitForReadyRead(500);
         socket->disconnectFromHost();
     }
 //    socket->waitForBytesWritten();
