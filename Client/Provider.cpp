@@ -49,6 +49,7 @@ bool Provider::deliver(Request *request, QTcpSocket *clientSocket)
 
     int payloadLength = -1, payloadCount = 0;
     if(peerSocket->waitForReadyRead(3000)) {
+        request->firstByteTime = QTime::currentTime();
         QByteArray data = peerSocket->readAll();
         if(data.size() < 9 || data.left(9) == "NOT FOUND") {
             peerSocket->write("END");

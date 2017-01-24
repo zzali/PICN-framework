@@ -24,7 +24,7 @@ public:
     int publisherPort = 9090;
     int proxyPort = 6060;
 
-    QString seekerIP = "192.168.2.71";
+    QString seekerIP = "192.168.2.150";
     int seekerPort = 7070;
 
     RecorderState recorderState = DISABLE;
@@ -42,6 +42,7 @@ public:
     static Definitions* getInstance() {
         return instance;
     }
+
     static void setSeekerIP(QString ip){
         instance->seekerIP = ip;
     }

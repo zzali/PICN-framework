@@ -33,6 +33,7 @@ public:
     bool supported;
     //zz{
     QTime requestTime;
+    QTime firstByteTime;
     quint64 size;
 
 

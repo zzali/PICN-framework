@@ -90,10 +90,10 @@ void Request::setSupported()
     supportedList.append(".jpeg");
     supportedList.append(".png");
     supportedList.append(".gif");
+    supportedList.append(".flv");
 //    supportedList.append(".css");
     supportedList.append(".mp3");
     supportedList.append(".mp4");
-    supportedList.append(".flv");
 //    supportedList.append(".js");
     supportedList.append(".swf");
 //    supportedList.append(".exe");

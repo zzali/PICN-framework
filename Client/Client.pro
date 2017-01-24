@@ -58,8 +58,3 @@ HEADERS += \
     SendHelloThread.h \
     RegisterRepository.h \
     LogThread.h
-
-FORMS += \
-    MainWidget.ui
-
-

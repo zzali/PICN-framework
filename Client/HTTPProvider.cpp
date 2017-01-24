@@ -67,6 +67,7 @@ bool HTTPProvider::readyRead()
     }
     if(firstReply) {
         firstReply = false;
+        request->firstByteTime = QTime::currentTime();
         //zz{
         //qDebug()<<"firstReply if in HTTPProvider::readyRead before writeReplyHeader\n";
         //zz}
@@ -160,8 +161,9 @@ void HTTPProvider::transferFinished()
     }
     //zz{
 
-    qDebug().noquote().nospace()<< qSetFieldWidth(10) << left << "HTTP"<< request->contentType<<request->contentKey <<request->size
-                      <<request->requestTime.msecsTo(QTime::currentTime())<<qSetFieldWidth(0)<<"\n";
+    qDebug().noquote().nospace()<< qSetFieldWidth(10) << left << "HTTP"<< request->requestTime.msecsSinceStartOfDay()
+                       << request->requestTime.msecsTo(request->firstByteTime)<< request->contentType<< request->contentKey
+                       <<request->size<<request->requestTime.msecsTo(QTime::currentTime())<<qSetFieldWidth(0)<<"\n";
     //zz}
     endOfThread();
 }
