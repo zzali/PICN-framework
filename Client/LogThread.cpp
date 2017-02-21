@@ -20,6 +20,7 @@ LogThread::~LogThread()
 void LogThread::run()
 {
     while(true){
+        this->sleep(10);
         outFile->open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream ts(outFile);
         int len = qlog->size();
@@ -28,7 +29,6 @@ void LogThread::run()
         }
         ts.flush();
         outFile->close();
-        this->sleep(10);
     }
 
 }
@@ -36,8 +36,8 @@ void LogThread::run()
 void LogThread::init()
 {
     qlog = new QQueue<QString>();
-    outFile= new QFile(Definitions::globalInstance()->logDir + "log.txt");
-    outFile->remove();
+    outFile= new QFile(Definitions::getInstance()->logDir + "log.txt");
+    //outFile->remove();
 }
 
 void LogThread::addLog(QString msg){
