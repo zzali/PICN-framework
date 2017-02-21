@@ -3,9 +3,7 @@
 
 #include "Definitions.h"
 #include "Client.h"
-#include "ActiveClients.h"
 #include <QHostAddress>
-#include <QTime>
 
 class Request
 {
@@ -17,7 +15,8 @@ protected:
 public:
     Request();
     ~Request();
-    virtual bool processRequest(ActiveClients *clients) = 0;
+
+    virtual bool processRequest() = 0;
 
     bool setData(const QByteArray &datagram, QHostAddress &senderAddress, HostPort &senderPort);
 };

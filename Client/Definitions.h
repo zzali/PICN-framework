@@ -1,54 +1,22 @@
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#ifndef DEFINITIONS
+#define DEFINITIONS
 
-#include <QString>
-#include "ClientCore.h"
+#include <QObject>
 
-
-#include "time.h"
-#include "math.h"
-
-//Singleton
+typedef qint16 HostPort;
+typedef unsigned int ClientID;
 
 class Definitions {
-public:
-    enum RecorderState{DISABLE, RECORD, PLAY};
+    static Definitions* instance;
 
-    QString tempDir = "./Data/Temp/";
-    QString cacheDir = "./Data/Cache/";
-    QString configDir = "./Data/Config/";
+public:
+    int serverUdpPort = 7070;
+    QString seekerIP = "192.168.2.150";
+    static Definitions* globalInstance();
     //zz{
-    QString logDir = "./Data/Log/";
+    QString logDir = "./Log/";
     int clientRegPort = 8080;
     //zz}
-    int publisherPort = 9090;
-    int proxyPort = 6060;
-
-    QString seekerIP = "192.168.2.150";
-    int seekerPort = 7070;
-
-    RecorderState recorderState = DISABLE;
-    bool echoEnabled = true;
-
-    bool useICNPercentage = 75;
-
-    QByteArray clientID;
-
-    Definitions() {
-        srand(time(NULL));
-        clientID = QByteArray::number((unsigned int)(rand() % 4000000000), 16).rightJustified(8, '0');
-    }
-
-    static Definitions* getInstance() {
-        return instance;
-    }
-
-    static void setSeekerIP(QString ip){
-        instance->seekerIP = ip;
-    }
-
-private:
-    static Definitions* instance;
 };
 
-#endif // GLOBALS_H
+#endif // GLOBAL
