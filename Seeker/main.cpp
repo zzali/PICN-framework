@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     //zz{
-    qDebug() <<"Please Enter the seeker IP (Ex. 192.168.2.150):";
+    qDebug() <<"PICN Seeker: Please Enter the seeker IP (Ex. 192.168.2.150):";
     QTextStream qin(stdin);
     Definitions::globalInstance()->seekerIP = qin.readLine();
 
