@@ -21,7 +21,7 @@ public:
     QTcpSocket *peerSocket;
     QFile *headerFile;
     QFile *contentFile;
-    static const int MAX_READ_SIZE = 2000000;//2MB
+    static const int MAX_READ_SIZE = 100000000;//100MB
 signals:
     
 public slots:
