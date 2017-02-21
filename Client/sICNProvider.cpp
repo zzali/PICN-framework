@@ -117,6 +117,7 @@ bool sICNProvider::deliver(Request *request)
 bool sICNProvider::deliverFromLocalRepository(Request *request)
 {
 
+    request->firstByteTime = QTime::currentTime();
     QString headerName = Definitions::getInstance()->cacheDir + request->hash + ".header";
     QString contentName = Definitions::getInstance()->cacheDir + request->hash + ".content";
     //qDebug()<<"deliverFromLocalRepository(): headerName: \n"<<headerName.toStdString()<<"\n";
@@ -125,11 +126,10 @@ bool sICNProvider::deliverFromLocalRepository(Request *request)
     //zz{
     request->size = 0;
     //zz}
-    request->firstByteTime = QTime::currentTime();
     if(headerFile->open(QIODevice::ReadOnly)) {
         while(!headerFile->atEnd()) {
             //zz clientSocket->write(headerFile->read(1000));
-            request->size += clientSocket->write(headerFile->read(50000));
+            request->size += clientSocket->write(headerFile->read(sICNProvider::MAX_READ_SIZE));
             clientSocket->flush();
         }
     }
@@ -139,7 +139,7 @@ bool sICNProvider::deliverFromLocalRepository(Request *request)
     if(contentFile->open(QIODevice::ReadOnly)) {
         while(!contentFile->atEnd()) {
             //zz clientSocket->write(contentFile->read(1000));
-            request->size += clientSocket->write(contentFile->read(50000));
+            request->size += clientSocket->write(contentFile->read(sICNProvider::MAX_READ_SIZE));
             clientSocket->flush();
             this->thread()->msleep(3);
         }

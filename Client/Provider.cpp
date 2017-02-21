@@ -33,6 +33,7 @@ bool Provider::deliver(Request *request, QTcpSocket *clientSocket)
     //zz{
     //qDebug() <<"provider: start delivering from publisher\n";
     //zz}
+
     peerSocket = new QTcpSocket();
     peerSocket->connectToHost(QHostAddress(peerAddress), peerPort);
 
@@ -43,13 +44,13 @@ bool Provider::deliver(Request *request, QTcpSocket *clientSocket)
     if(!peerSocket->waitForConnected(1000)) {
         return false;
     }
-
+    request->firstByteTime = QTime::currentTime();
     peerSocket->write("GIVE " + request->hash.toUtf8() + "\r\n");
     peerSocket->flush();
 
     int payloadLength = -1, payloadCount = 0;
     if(peerSocket->waitForReadyRead(3000)) {
-        request->firstByteTime = QTime::currentTime();
+
         QByteArray data = peerSocket->readAll();
         if(data.size() < 9 || data.left(9) == "NOT FOUND") {
             peerSocket->write("END");

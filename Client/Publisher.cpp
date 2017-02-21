@@ -37,7 +37,7 @@ bool Publisher::deliver(PeerRequest &request)
 //    qDebug() << "here 16";
     while(!headerFile->atEnd()) {
        // this->waitForBandwidthLimit();
-        QByteArray data = headerFile->read(50000);
+        QByteArray data = headerFile->read(Publisher::MAX_READ_SIZE);
         peerSocket->write(data);
         data_size += data.size();
         //peerSocket->waitForBytesWritten(1000);
@@ -48,7 +48,7 @@ bool Publisher::deliver(PeerRequest &request)
 //    qDebug() << "header sent!";
     while(!contentFile->atEnd()) {
        // this->waitForBandwidthLimit();
-        QByteArray data = contentFile->read(50000);
+        QByteArray data = contentFile->read(Publisher::MAX_READ_SIZE);
         peerSocket->write(data);
         data_size += data.size();
         //peerSocket->waitForBytesWritten(1000);

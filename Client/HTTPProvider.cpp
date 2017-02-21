@@ -16,6 +16,7 @@ HTTPProvider::~HTTPProvider()
 
 void HTTPProvider::startConnection(Request *request)
 {
+    request->firstByteTime = QTime::currentTime();
     firstReply = true;
     this->request = request;
     //zz{
@@ -58,6 +59,7 @@ void HTTPProvider::setReceiverSocket(QTcpSocket *clientSocket, QNetworkAccessMan
 
 bool HTTPProvider::readyRead()
 {
+
     if(clientSocket->state() == QTcpSocket::UnconnectedState) {
         errorOccured(QNetworkReply::ProtocolUnknownError);
         //zz{
@@ -67,7 +69,7 @@ bool HTTPProvider::readyRead()
     }
     if(firstReply) {
         firstReply = false;
-        request->firstByteTime = QTime::currentTime();
+
         //zz{
         //qDebug()<<"firstReply if in HTTPProvider::readyRead before writeReplyHeader\n";
         //zz}

@@ -29,6 +29,7 @@ public:
     Provider *provider;
     Request request;
     bool success;
+    static const int MAX_READ_SIZE = 2000000;//2MB
 
 signals:
 
