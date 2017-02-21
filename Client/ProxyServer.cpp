@@ -18,7 +18,7 @@ ProxyServer::ProxyServer(QObject *parent) :
 
     timer2 = new QTimer(this);
     connect(timer2, SIGNAL(timeout()), this, SLOT(takeFromQueue2()));
-    timer2->start(20);
+    timer2->start(2);
 }
 
 ProxyServer::~ProxyServer()

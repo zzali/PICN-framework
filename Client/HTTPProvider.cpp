@@ -107,13 +107,14 @@ void HTTPProvider::errorOccured(QNetworkReply::NetworkError err)
     }
     //zz{
     if (!request->dataReply.isEmpty()){
+        clientSocket->write(request->dataReply);
+        clientSocket->flush();
         if(file != NULL && file->isOpen()) {
             file->write(request->dataReply);
             file->flush();
         }
 
-        clientSocket->write(request->dataReply);
-        clientSocket->flush();
+
      }
     //zz}
     if(file != NULL) {
@@ -132,13 +133,14 @@ void HTTPProvider::transferFinished()
         writeReplyHeader();
     }
     if (!request->dataReply.isEmpty()){
+        clientSocket->write(request->dataReply);
+        clientSocket->flush();
         if(file != NULL && file->isOpen()) {
             file->write(request->dataReply);
             file->flush();
         }
 
-        clientSocket->write(request->dataReply);
-        clientSocket->flush();
+
      }
 
 //    QByteArray data;
@@ -212,14 +214,16 @@ void HTTPProvider:: writeReplyHeader()
         data.append(header[i].first + ":" + header[i].second + " \r\n");
     data.append("\r\n");
 
+    clientSocket->write(data);
+    request->size += data.size();
+    clientSocket->flush();
+
     if(file != NULL && file->isOpen()) {
         file->write(data);
         file->flush();
     }
 
-    clientSocket->write(data);
-    request->size += data.size();
-    clientSocket->flush();
+
     //zz{
     //qDebug()<<"HTTPProvider::writeReplyHeader end of  writeReplyHeader()\n";
     //zz}
