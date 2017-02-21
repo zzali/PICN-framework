@@ -25,7 +25,6 @@ SOURCES += main.cpp \
     PublisherThread.cpp \
     Publisher.cpp \
     Globals.cpp \
-    MainWidget.cpp \
     RepositoryCreatorThread.cpp \
     RepositoryCreator.cpp \
     PublisherServer.cpp \
@@ -46,7 +45,6 @@ HEADERS += \
     sICNProvider.h \
     PublisherThread.h \
     Publisher.h \
-    MainWidget.h \
     RepositoryCreatorThread.h \
     RepositoryCreator.h \
     PublisherServer.h \
