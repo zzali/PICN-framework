@@ -45,9 +45,11 @@ bool sICNProvider::deliver(Request *request)
 
     if(deliverFromLocalRepository(request) == true){
         //zz{
-        qDebug().noquote().nospace()<< qSetFieldWidth(10) << left << "LPICN"<< request->requestTime.msecsSinceStartOfDay()
-                                    <<request->requestTime.msecsTo(request->firstByteTime)<<request->contentType << request->contentKey
-                                   <<request->size<<request->requestTime.msecsTo(QTime::currentTime())<<qSetFieldWidth(0)<<"\n";
+        //qDebug().noquote().nospace()<< qSetFieldWidth(10) << left << "LPICN"<< request->requestTime.msecsSinceStartOfDay()
+        //                            <<request->requestTime.msecsTo(request->firstByteTime)<<request->contentType << request->contentKey
+        //                           <<request->size<<request->requestTime.msecsTo(QTime::currentTime())<<qSetFieldWidth(0)<<"\n";
+        qDebug().noquote().nospace()<< qSetFieldWidth(10) << left << "LPICN"<< request->contentType<< request->contentKey
+                           <<request->size<<request->requestTime.msecsTo(QTime::currentTime())<<qSetFieldWidth(0)<<"\n";
         //zz}
         return true;
     }
@@ -94,9 +96,11 @@ bool sICNProvider::deliver(Request *request)
                 if( provider->deliver(request, clientSocket) ) {
                     success = true;
                     //zz{
-                    qDebug().noquote().nospace()<< qSetFieldWidth(10) << left << "PICN"<< request->requestTime.msecsSinceStartOfDay()
-                               <<request->requestTime.msecsTo(request->firstByteTime) << request->contentType<<request->contentKey <<request->size
-                               <<request->requestTime.msecsTo(QTime::currentTime())<<qSetFieldWidth(0)<<"\n";
+                    //qDebug().noquote().nospace()<< qSetFieldWidth(10) << left << "PICN"<< request->requestTime.msecsSinceStartOfDay()
+                    //           <<request->requestTime.msecsTo(request->firstByteTime) << request->contentType<<request->contentKey <<request->size
+                    //           <<request->requestTime.msecsTo(QTime::currentTime())<<qSetFieldWidth(0)<<"\n";
+                    qDebug().noquote().nospace()<< qSetFieldWidth(10) << left << "PICN"<< request->contentType<< request->contentKey
+                                       <<request->size<<request->requestTime.msecsTo(QTime::currentTime())<<qSetFieldWidth(0)<<"\n";
                     //zz}
                     return true;
                 }

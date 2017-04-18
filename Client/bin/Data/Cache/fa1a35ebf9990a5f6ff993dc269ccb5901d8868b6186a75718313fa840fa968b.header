@@ -1,0 +1,11 @@
+HTTP/1.0 200 OK
+Date:Tue, 18 Apr 2017 08:31:18 GMT 
+Server:Apache 
+Last-Modified:Fri, 14 Apr 2017 05:30:06 GMT 
+ETag:"1682183-3ae8-54d19bbf656b4" 
+Accept-Ranges:bytes 
+Content-Length:15080 
+Keep-Alive:timeout=15 
+Connection:Keep-Alive 
+Content-Type:image/jpeg 
+

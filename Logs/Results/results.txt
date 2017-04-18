@@ -1,0 +1,11 @@
+supported number of requests:8065
+Hit ratio in peers:0.22306261624302542
+Hit ratio in local cache:0.16317420954742715
+Total hit ratio:0.3862368257904526
+Total traffic:2848383859
+saved external traffic:27.36411440955297
+saved external traffic (picn+local):34.23717442151114
+Maximum speed provides by peers:78.31787618048268
+Maximum speed provides by local:125.01213250982595
+Maximum speed provides by main web servers when the requests miss in PICN:70.15989576040451
+Maximum speed provides by main web servers:55.44073142857143
