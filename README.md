@@ -10,10 +10,13 @@ January 2016
 
 3- Please pay attention that the Data folder (with its all subfolders) is required for client and Log folder is required for seeker in the    execution folder.
 
-4- Firefox browser has been tested now with the client package, but any other browser can be used. It is sufficient to set the proxy IP      for the browser to 127.0.0.1:6060. 
+4- Firefox browser has been tested now with the client package, but any other browser can be used. It is sufficient to set the proxy IP for the browser to 127.0.0.1:6060. 
 
-5- Please pay attention that https requests may cause the client crash.
-
-6- For extracting the diagrams from log files you can use Matlab files in the folder Matlab.
-   In order to use matlab files place the log file (log.txt) of the client in Matlab/log folder and then execute:                            CDF_Vectors('log.txt')
+5- For extracting the diagrams from log files you can use statistics.py.
+   In order to use it place all the clients' log files (log.txt) in a folder and execute:                      
+   $ python statistics.py -p logfiles_folder
+   Example:
+   python statistics.py -p Logs
+   
+   You can find output diagrams and statistics in Results folder in the logfiles_folder path. 
 
